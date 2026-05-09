@@ -112,8 +112,8 @@ defineExpose({ gisMap });
   <div class="relative h-full w-full">
     <div id="map-container" ref="mapContainer" class="h-full w-full bg-slate-900"></div>
 
-    <div class="absolute top-6 left-6 z-20 flex flex-col gap-3">
-      <div class="bg-slate-900/95 backdrop-blur-md rounded-xl shadow-2xl border border-slate-700 p-2 min-w-[140px]">
+    <div class="absolute top-6 right-96 z-20 flex flex-col gap-3">
+      <div class="bg-slate-900/95 backdrop-blur-md rounded-xl shadow-2xl border border-slate-700 p-2 min-w-[120px]">
         <div class="flex flex-col gap-1">
           <button
             @click="setActiveTool('select')"
