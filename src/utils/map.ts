@@ -41,7 +41,7 @@ export class GisMap {
 
     const baseLayer = new TileLayer({
       source: new XYZ({
-        url: 'https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
+        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
         crossOrigin: 'anonymous'
       })
     });
