@@ -151,7 +151,7 @@ defineExpose({ layers });
 </script>
 
 <template>
-  <div class="h-full flex flex-col bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700" style="overflow: hidden;">
+  <div class="h-full flex flex-col bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700" style="position: relative;">
     <div class="flex items-center justify-between p-4 border-b border-slate-700">
       <div class="flex items-center gap-2">
         <Layers :size="18" class="text-blue-400" />
@@ -165,7 +165,7 @@ defineExpose({ layers });
       </button>
     </div>
 
-    <div class="flex-1 overflow-y-auto" style="padding: 12px; margin: 0;">
+    <div class="flex-1 overflow-y-auto p-3 space-y-3" style="overflow-y: auto;">
       <div v-for="(groupLayers, groupName) in groupedLayers" :key="groupName" class="space-y-2">
         <button
           @click="toggleGroup(groupName)"
@@ -180,7 +180,7 @@ defineExpose({ layers });
           <div
             v-for="layer in groupLayers"
             :key="layer.id"
-            class="bg-slate-700/50 rounded-lg p-2 space-y-2 hover:bg-slate-700/70 transition-colors group"
+            class="bg-slate-700/50 rounded-lg p-3 space-y-2 hover:bg-slate-700/70 transition-colors group"
           >
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
@@ -334,6 +334,11 @@ defineExpose({ layers });
 .layer-dialog :deep(.el-dialog) {
   background: #1e293b;
   border: 1px solid #334155;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
 }
 .layer-dialog :deep(.el-dialog__wrapper) {
   z-index: 9999 !important;
@@ -342,6 +347,10 @@ defineExpose({ layers });
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: auto !important;
 }
 .layer-dialog :deep(.el-dialog__header) {
   border-bottom: 1px solid #334155;
