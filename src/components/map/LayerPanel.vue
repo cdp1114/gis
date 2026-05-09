@@ -165,7 +165,7 @@ defineExpose({ layers });
       </button>
     </div>
 
-    <div class="flex-1 overflow-y-auto p-3 space-y-3">
+    <div class="flex-1 overflow-y-auto" style="padding: 12px; margin: 0;">
       <div v-for="(groupLayers, groupName) in groupedLayers" :key="groupName" class="space-y-2">
         <button
           @click="toggleGroup(groupName)"
@@ -180,7 +180,7 @@ defineExpose({ layers });
           <div
             v-for="layer in groupLayers"
             :key="layer.id"
-            class="bg-slate-700/50 rounded-lg p-3 space-y-2 hover:bg-slate-700/70 transition-colors group"
+            class="bg-slate-700/50 rounded-lg p-2 space-y-2 hover:bg-slate-700/70 transition-colors group"
           >
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">

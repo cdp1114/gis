@@ -166,7 +166,7 @@ defineExpose({ mapRef });
         <Transition name="slide">
           <div
             v-if="showLayerPanel"
-            class="w-80 h-full bg-slate-900/95 border-l border-slate-800 p-4 overflow-hidden"
+            class="w-80 h-full bg-slate-900/95 border-l border-slate-800 overflow-hidden"
           >
             <LayerPanel 
               @tool-change="(tool) => mapRef?.handleToolChange?.(tool)"
