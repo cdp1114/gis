@@ -123,7 +123,7 @@ const handleDeleteRole = (role: any) => {
           </template>
         </ElTableColumn>
         <ElTableColumn prop="createTime" label="创建时间" width="120" />
-        <ElTableColumn label="操作" width="200">
+        <ElTableColumn label="操作" width="260">
           <template #default="{ row }">
             <button
               @click="handleEditRole(row)"
