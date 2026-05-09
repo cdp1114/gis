@@ -72,7 +72,9 @@ export class GisMap {
   }
 
   setCenter(center: [number, number]) {
-    this.map.getView().setCenter(fromLonLat(center));
+    const view = this.map.getView();
+    const projection = view.getProjection();
+    view.setCenter(fromLonLat(center, projection));
   }
 
   setZoom(zoom: number) {
