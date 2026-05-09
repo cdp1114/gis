@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { UserPlus, Edit2, Trash2, Search, Shield } from 'lucide-vue-next';
+import { UserPlus, Edit2, Trash2, Search, User, Shield } from 'lucide-vue-next';
 import { ElTable, ElTableColumn, ElButton, ElInput, ElTag, ElDialog, ElForm, ElFormItem, ElSelect, ElOption, ElMessage } from 'element-plus';
 
 const searchKeyword = ref('');
@@ -66,19 +66,19 @@ const handleSave = () => {
 </script>
 
 <template>
-  <div class="h-full flex flex-col bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700">
-    <div class="flex items-center justify-between p-4 border-b border-slate-700">
-      <div class="flex items-center gap-2">
-        <Shield :size="18" class="text-blue-400" />
-        <h3 class="text-white font-semibold">用户管理</h3>
+  <div class="h-full bg-slate-900 p-6 overflow-auto">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-white">用户管理</h1>
+        <p class="text-slate-400 mt-1">管理系统用户账号</p>
       </div>
-      <button @click="handleAdd" class="flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-md text-sm transition-colors">
-        <UserPlus :size="14" />
-        <span>添加用户</span>
-      </button>
+      <ElButton type="primary" @click="handleAdd">
+        <UserPlus :size="16" class="mr-1" />
+        添加用户
+      </ElButton>
     </div>
 
-    <div class="p-4 border-b border-slate-700">
+    <div class="mb-6">
       <ElInput v-model="searchKeyword" placeholder="搜索用户名或邮箱" class="max-w-md">
         <template #prefix>
           <Search :size="16" class="text-slate-400" />
@@ -86,8 +86,12 @@ const handleSave = () => {
       </ElInput>
     </div>
 
-    <div class="flex-1 overflow-auto p-4">
-      <ElTable :data="filteredUsers" stripe>
+    <div class="bg-slate-800 rounded-xl border border-slate-700">
+      <div class="flex items-center gap-2 px-4 py-3 border-b border-slate-700">
+        <User :size="16" class="text-blue-400" />
+        <h2 class="text-white font-medium">用户列表</h2>
+      </div>
+      <ElTable :data="filteredUsers" stripe class="w-full">
         <ElTableColumn prop="username" label="用户名" width="150">
           <template #default="{ row }">
             <div class="flex items-center gap-2">
@@ -112,14 +116,20 @@ const handleSave = () => {
           </template>
         </ElTableColumn>
         <ElTableColumn prop="createTime" label="创建时间" width="120" />
-        <ElTableColumn label="操作" width="160" fixed="right">
+        <ElTableColumn label="操作" width="160">
           <template #default="{ row }">
             <div class="flex gap-2">
-              <button @click="handleEdit(row)" class="flex items-center gap-1 px-2 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 rounded transition-colors">
+              <button 
+                @click="handleEdit(row)" 
+                class="flex items-center gap-1 px-2 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 rounded transition-colors"
+              >
                 <Edit2 :size="14" />
                 <span class="text-xs">编辑</span>
               </button>
-              <button @click="handleDelete(row)" class="flex items-center gap-1 px-2 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded transition-colors">
+              <button 
+                @click="handleDelete(row)" 
+                class="flex items-center gap-1 px-2 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded transition-colors"
+              >
                 <Trash2 :size="14" />
                 <span class="text-xs">删除</span>
               </button>
@@ -129,7 +139,7 @@ const handleSave = () => {
       </ElTable>
     </div>
 
-    <ElDialog v-model="showDialog" :title="editingUser ? '编辑用户' : '添加用户'" width="500px" class="user-dialog">
+    <ElDialog v-model="showDialog" :title="editingUser ? '编辑用户' : '添加用户'" width="500px" class="layer-dialog">
       <ElForm :model="formData" label-position="top">
         <ElFormItem label="用户名">
           <ElInput v-model="formData.username" placeholder="请输入用户名" />
@@ -157,24 +167,36 @@ const handleSave = () => {
 </template>
 
 <style scoped>
-.user-dialog :deep(.el-dialog) {
-  background: #1e293b;
-  border: 1px solid #334155;
+:deep(.el-table) {
+  background-color: #1e293b;
+  --el-table-bg-color: #1e293b;
+  --el-table-tr-bg-color: #1e293b;
+  --el-table-header-bg-color: rgba(51, 65, 85, 0.8);
+  --el-table-border-color: #334155;
 }
-.user-dialog :deep(.el-dialog__header) {
+
+:deep(.el-table__header-wrapper th) {
+  background-color: rgba(51, 65, 85, 0.8);
+  color: #e2e8f0;
+  font-weight: 600;
   border-bottom: 1px solid #334155;
 }
-.user-dialog :deep(.el-dialog__title) {
-  color: #f1f5f9;
+
+:deep(.el-table__body-wrapper) {
+  background-color: #1e293b;
 }
-.user-dialog :deep(.el-form-item__label) {
+
+:deep(.el-table__body-wrapper tr) {
+  background-color: #1e293b;
+}
+
+:deep(.el-table__body-wrapper td) {
+  background-color: #1e293b;
+  border-bottom: 1px solid #334155;
   color: #cbd5e1;
 }
-.user-dialog :deep(.el-input__wrapper) {
-  background: #0f172a;
-  border: 1px solid #334155;
-}
-.user-dialog :deep(.el-input__inner) {
-  color: #f1f5f9;
+
+:deep(.el-table__body-wrapper tr:hover > td) {
+  background-color: rgba(51, 65, 85, 0.5) !important;
 }
 </style>

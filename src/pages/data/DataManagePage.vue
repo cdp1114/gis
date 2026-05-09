@@ -121,23 +121,35 @@ const handleDelete = (row: any) => {
 
 <style scoped>
 :deep(.el-table) {
-  background-color: transparent;
-  --el-table-bg-color: transparent;
+  background-color: #1e293b;
+  --el-table-bg-color: #1e293b;
+  --el-table-tr-bg-color: #1e293b;
+  --el-table-header-bg-color: rgba(51, 65, 85, 0.8);
+  --el-table-border-color: #334155;
 }
 
 :deep(.el-table__header-wrapper th) {
-  background-color: rgba(51, 65, 85, 0.5);
+  background-color: rgba(51, 65, 85, 0.8);
   color: #e2e8f0;
   font-weight: 600;
   border-bottom: 1px solid #334155;
 }
 
+:deep(.el-table__body-wrapper) {
+  background-color: #1e293b;
+}
+
+:deep(.el-table__body-wrapper tr) {
+  background-color: #1e293b;
+}
+
 :deep(.el-table__body-wrapper td) {
-  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+  background-color: #1e293b;
+  border-bottom: 1px solid #334155;
   color: #cbd5e1;
 }
 
 :deep(.el-table__body-wrapper tr:hover > td) {
-  background-color: rgba(51, 65, 85, 0.3) !important;
+  background-color: rgba(51, 65, 85, 0.5) !important;
 }
 </style>
