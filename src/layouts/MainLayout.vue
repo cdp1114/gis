@@ -168,7 +168,10 @@ defineExpose({ mapRef });
             v-if="showLayerPanel"
             class="w-80 h-full bg-slate-900/95 border-l border-slate-800 p-4 overflow-hidden"
           >
-            <LayerPanel />
+            <LayerPanel 
+              @tool-change="(tool) => mapRef?.handleToolChange?.(tool)"
+              @draw-type-change="(type) => mapRef?.handleDrawTypeChange?.(type)"
+            />
           </div>
         </Transition>
       </div>

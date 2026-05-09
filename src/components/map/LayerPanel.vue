@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { Eye, EyeOff, Trash2, Edit2, GripVertical, ChevronDown, ChevronRight, Plus, Layers } from 'lucide-vue-next';
+import { Eye, EyeOff, Trash2, Edit2, GripVertical, ChevronDown, ChevronRight, Plus, Layers, MousePointer, PenTool, Ruler } from 'lucide-vue-next';
 import { ElSwitch, ElSlider, ElButton, ElInput, ElDialog, ElForm, ElFormItem, ElSelect, ElOption, ElMessage } from 'element-plus';
 import { layerApi } from '@/api';
 import type { Layer } from '@/types/gis';
@@ -24,6 +24,29 @@ const newLayer = ref<Partial<Layer>>({
   opacity: 1,
   isVisible: true
 });
+
+const activeTool = ref<'select' | 'draw' | 'measure'>('select');
+const drawType = ref<'point' | 'line' | 'polygon'>('point');
+const expandedTools = ref<Record<string, boolean>>({});
+
+const emit = defineEmits<{
+  (e: 'toolChange', tool: 'select' | 'draw' | 'measure'): void;
+  (e: 'drawTypeChange', type: 'point' | 'line' | 'polygon'): void;
+}>();
+
+const setActiveTool = (tool: 'select' | 'draw' | 'measure') => {
+  activeTool.value = tool;
+  emit('toolChange', tool);
+};
+
+const setDrawType = (type: 'point' | 'line' | 'polygon') => {
+  drawType.value = type;
+  emit('drawTypeChange', type);
+};
+
+const toggleTools = (layerId: string) => {
+  expandedTools.value[layerId] = !expandedTools.value[layerId];
+};
 
 const groupedLayers = computed(() => {
   return {
@@ -164,7 +187,53 @@ defineExpose({ layers });
                 <span :class="['w-2 h-2 rounded-full', getLayerColor(layer.layerType)]"></span>
                 <span class="text-sm text-white">{{ layer.layerName }}</span>
               </div>
-              <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div class="flex items-center gap-1">
+                <div class="relative">
+                  <button
+                    @click="toggleTools(layer.id)"
+                    class="p-1 hover:bg-slate-600 text-slate-400 hover:text-white rounded transition-colors"
+                    title="操作"
+                  >
+                    <Layers :size="14" />
+                  </button>
+                  <Transition name="dropdown">
+                    <div
+                      v-if="expandedTools[layer.id]"
+                      class="absolute right-0 top-full mt-1 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-1 z-50 min-w-[100px]"
+                    >
+                      <button
+                        @click="setActiveTool('select'); expandedTools[layer.id] = false"
+                        :class="[
+                          'w-full flex items-center gap-2 px-3 py-1.5 text-left text-sm transition-colors',
+                          activeTool === 'select' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-700'
+                        ]"
+                      >
+                        <MousePointer :size="14" />
+                        <span>选择</span>
+                      </button>
+                      <button
+                        @click="setActiveTool('draw'); expandedTools[layer.id] = false"
+                        :class="[
+                          'w-full flex items-center gap-2 px-3 py-1.5 text-left text-sm transition-colors',
+                          activeTool === 'draw' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-700'
+                        ]"
+                      >
+                        <PenTool :size="14" />
+                        <span>绘制</span>
+                      </button>
+                      <button
+                        @click="setActiveTool('measure'); expandedTools[layer.id] = false"
+                        :class="[
+                          'w-full flex items-center gap-2 px-3 py-1.5 text-left text-sm transition-colors',
+                          activeTool === 'measure' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-700'
+                        ]"
+                      >
+                        <Ruler :size="14" />
+                        <span>测量</span>
+                      </button>
+                    </div>
+                  </Transition>
+                </div>
                 <button
                   @click="handleEditLayer(layer)"
                   class="p-1 hover:bg-slate-600 text-slate-400 hover:text-white rounded transition-colors"
@@ -281,5 +350,16 @@ defineExpose({ layers });
 }
 .layer-dialog :deep(.el-input__inner) {
   color: #f1f5f9;
+}
+
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 0.2s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 </style>
