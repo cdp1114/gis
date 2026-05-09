@@ -45,7 +45,21 @@ body {
 }
 
 .ol-zoom,
-.ol-rotate {
+.ol-rotate,
+.ol-attribution,
+.ol-full-screen {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+div[class*="ol-zoom"] {
   display: none !important;
 }
 
