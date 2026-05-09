@@ -165,7 +165,7 @@ defineExpose({ layers });
       </button>
     </div>
 
-    <div class="flex-1 overflow-y-auto p-3 space-y-3" style="overflow-y: auto;">
+    <div class="flex-1 overflow-hidden p-3 space-y-3">
       <div v-for="(groupLayers, groupName) in groupedLayers" :key="groupName" class="space-y-2">
         <button
           @click="toggleGroup(groupName)"
@@ -350,7 +350,7 @@ defineExpose({ layers });
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  overflow: auto !important;
+  overflow: hidden !important;
 }
 .layer-dialog :deep(.el-dialog__header) {
   border-bottom: 1px solid #334155;
