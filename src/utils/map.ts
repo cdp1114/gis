@@ -5,7 +5,7 @@ import VectorLayer from 'ol/layer/Vector';
 import XYZ from 'ol/source/XYZ';
 import VectorSource from 'ol/source/Vector';
 import { fromLonLat, toLonLat } from 'ol/proj';
-import { ScaleLine, OverviewMap, MousePosition } from 'ol/control';
+import { ScaleLine, OverviewMap, MousePosition, defaults as defaultControls } from 'ol/control';
 import { Draw, Modify, Select } from 'ol/interaction';
 import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 import Feature from 'ol/Feature';
@@ -54,11 +54,16 @@ export class GisMap {
         zoom: options.zoom,
         projection: options.projection || 'EPSG:4326'
       }),
-      controls: [
-        new ScaleLine({ units: 'metric' }),
-        new OverviewMap({ collapsed: true }),
-        new MousePosition({ projection: 'EPSG:4326', coordinateFormat: (coord) => coord?.map(c => c.toFixed(6)).join(', ') })
-      ]
+      controls: defaultControls({
+        zoom: false,
+        rotate: false,
+        attribution: false,
+        overviewMap: false,
+        fullScreen: false,
+        keyboard: false
+      }).extend([
+        new ScaleLine({ units: 'metric' })
+      ])
     });
   }
 
