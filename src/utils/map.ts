@@ -57,10 +57,7 @@ export class GisMap {
       controls: defaultControls({
         zoom: false,
         rotate: false,
-        attribution: false,
-        overviewMap: false,
-        fullScreen: false,
-        keyboard: false
+        attribution: false
       }).extend([
         new ScaleLine({ units: 'metric' })
       ])

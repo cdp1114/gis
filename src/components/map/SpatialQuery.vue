@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { Search, MapPin, Layers, Download, Filter, X, Locate } from 'lucide-vue-next';
+import { Search, MapPin, Layers, Download, Filter, X, Locate, Navigation } from 'lucide-vue-next';
 import { ElTable, ElTableColumn, ElInput, ElButton, ElSelect, ElOption, ElPagination, ElMessage, ElTag } from 'element-plus';
 
 const searchKeyword = ref('');
@@ -168,7 +168,7 @@ const getStatusText = (status: string) => {
               @click="handleLocate(row)"
               class="flex items-center gap-1 px-2 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 rounded transition-colors"
             >
-              <LocationOn :size="14" />
+              <Navigation :size="14" />
               <span class="text-xs">定位</span>
             </button>
           </template>
