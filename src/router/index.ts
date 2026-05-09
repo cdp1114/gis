@@ -1,26 +1,41 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '@/pages/HomePage.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginPage from '@/pages/LoginPage.vue';
+import MapPage from '@/pages/MapPage.vue';
 
-// 定义路由配置
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomePage,
+    redirect: '/map'
   },
   {
-    path: '/about',
-    name: 'about',
-    component: {
-      template: '<div class="text-center text-xl p-8">About Page - Coming Soon</div>',
-    },
+    path: '/login',
+    name: 'login',
+    component: LoginPage,
+    meta: { requiresAuth: false }
   },
-]
+  {
+    path: '/map',
+    name: 'map',
+    component: MapPage,
+    meta: { requiresAuth: true }
+  }
+];
 
-// 创建路由实例
 const router = createRouter({
   history: createWebHistory(),
-  routes,
-})
+  routes
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+
+  if (to.meta.requiresAuth && !token) {
+    next('/login');
+  } else if (to.path === '/login' && token) {
+    next('/map');
+  } else {
+    next();
+  }
+});
+
+export default router;
