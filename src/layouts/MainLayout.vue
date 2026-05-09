@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import MapContainer from '@/components/map/MapContainer.vue';
 import LayerPanel from '@/components/map/LayerPanel.vue';
 import {
-  MapPin, Layers, Settings, User, ChevronLeft, ChevronRight, Bell, Maximize2,
-  Search, Activity, Database, BarChart3, Shield
+  MapPin, Layers, ChevronLeft, ChevronRight, Bell, Maximize2,
+  Search, Activity, Database, BarChart3, Shield, User
 } from 'lucide-vue-next';
 
 const router = useRouter();
@@ -18,6 +18,10 @@ const navigateTo = (path: string) => {
 const isActive = (path: string) => {
   return route.path === path;
 };
+
+const isMapPage = computed(() => {
+  return route.path === '/map';
+});
 
 const showLayerPanel = ref(true);
 const collapsed = ref(false);
@@ -145,7 +149,7 @@ defineExpose({ mapRef });
             @click="toggleLayerPanel"
             :class="[
               'flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all',
-              showLayerPanel
+              showLayerPanel && isMapPage
                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
             ]"
@@ -200,14 +204,18 @@ defineExpose({ mapRef });
       </header>
 
       <div class="flex-1 flex overflow-hidden">
-        <div class="flex-1 relative">
-          <MapContainer ref="mapRef" />
+        <div class="flex-1 relative overflow-hidden">
+          <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in">
+              <component :is="Component" />
+            </transition>
+          </router-view>
         </div>
 
         <Transition name="slide">
           <div
-            v-if="showLayerPanel"
-            class="w-80 h-full bg-slate-900/95 border-l border-slate-800"
+            v-if="showLayerPanel && isMapPage"
+            class="w-80 h-full bg-slate-900/95 border-l border-slate-800 overflow-hidden"
           >
             <LayerPanel 
               @tool-change="(tool) => mapRef?.handleToolChange?.(tool)"
@@ -235,5 +243,15 @@ defineExpose({ mapRef });
 .slide-leave-to {
   opacity: 0;
   transform: translateX(20px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

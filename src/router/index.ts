@@ -1,8 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router';
 import LoginPage from '@/pages/LoginPage.vue';
+import MainLayoutPage from '@/pages/MainLayoutPage.vue';
 import MapPage from '@/pages/MapPage.vue';
-import HomePage from '@/pages/HomePage.vue';
+import SpatialQueryPage from '@/pages/map/SpatialQueryPage.vue';
+import SpatialAnalysisPage from '@/pages/map/SpatialAnalysisPage.vue';
+import DataManagePage from '@/pages/data/DataManagePage.vue';
+import StatsPage from '@/pages/stats/StatsPage.vue';
+import UserManage from '@/pages/system/UserManage.vue';
+import RoleManage from '@/pages/system/RoleManage.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -16,52 +22,46 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: false }
   },
   {
-    path: '/home',
-    name: 'home',
-    component: HomePage,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/map',
-    name: 'map',
-    component: MapPage,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/map/query',
-    name: 'mapQuery',
-    component: () => import('@/pages/map/SpatialQueryPage.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/map/analysis',
-    name: 'mapAnalysis',
-    component: () => import('@/pages/map/SpatialAnalysisPage.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/data/manage',
-    name: 'dataManage',
-    component: () => import('@/pages/data/DataManagePage.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/stats',
-    name: 'stats',
-    component: () => import('@/pages/stats/StatsPage.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/system/user',
-    name: 'systemUser',
-    component: () => import('@/pages/system/UserManage.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/system/role',
-    name: 'systemRole',
-    component: () => import('@/pages/system/RoleManage.vue'),
-    meta: { requiresAuth: true }
+    path: '/',
+    component: MainLayoutPage,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'map',
+        name: 'map',
+        component: MapPage
+      },
+      {
+        path: 'map/query',
+        name: 'mapQuery',
+        component: SpatialQueryPage
+      },
+      {
+        path: 'map/analysis',
+        name: 'mapAnalysis',
+        component: SpatialAnalysisPage
+      },
+      {
+        path: 'data/manage',
+        name: 'dataManage',
+        component: DataManagePage
+      },
+      {
+        path: 'stats',
+        name: 'stats',
+        component: StatsPage
+      },
+      {
+        path: 'system/user',
+        name: 'systemUser',
+        component: UserManage
+      },
+      {
+        path: 'system/role',
+        name: 'systemRole',
+        component: RoleManage
+      }
+    ]
   }
 ];
 
