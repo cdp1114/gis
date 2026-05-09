@@ -5,6 +5,7 @@ import { MapPin, Layers, Ruler, Trash2, Download, MousePointer, Plus, Edit, Grid
 import type { DrawType } from '@/types/gis';
 
 const mapContainer = ref<HTMLElement | null>(null);
+const mapTarget = ref<string>('map-container');
 let gisMap: GisMap | null = null;
 
 const activeTool = ref<'select' | 'draw' | 'measure'>('select');
@@ -21,8 +22,9 @@ const emit = defineEmits<{
 
 onMounted(() => {
   if (mapContainer.value) {
+    mapTarget.value = 'map-container';
     gisMap = new GisMap({
-      target: mapContainer.value,
+      target: mapTarget.value,
       center: [116.3974, 39.9088],
       zoom: 10,
       projection: 'EPSG:4326'
@@ -131,7 +133,7 @@ defineExpose({ gisMap });
 
 <template>
   <div class="relative h-full w-full">
-    <div ref="mapContainer" class="h-full w-full bg-slate-900"></div>
+    <div id="map-container" ref="mapContainer" class="h-full w-full bg-slate-900"></div>
 
     <div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
       <div class="bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700 p-1">
@@ -230,7 +232,7 @@ defineExpose({ gisMap });
           class="flex items-center justify-center w-10 h-10 text-slate-300 hover:bg-slate-700 hover:text-white rounded-md transition-all"
           title="缩小"
         >
-          <span class="text-lg font-light">−</span>
+          <span class="text-lg font-light">-</span>
         </button>
         <button
           @click="resetView"

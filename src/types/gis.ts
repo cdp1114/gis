@@ -1,3 +1,5 @@
+import type { Geometry, Position } from 'geojson';
+
 export interface Layer {
   id: string;
   layerName: string;
@@ -14,7 +16,7 @@ export interface Layer {
 export interface Feature {
   id: string;
   layerId: string;
-  geometry: GeoJSON.Geometry;
+  geometry: Geometry;
   properties: Record<string, any>;
   createTime?: string;
   updateTime?: string;
@@ -22,7 +24,7 @@ export interface Feature {
 
 export interface FeatureQuery {
   layerId?: string;
-  geometry?: GeoJSON.Geometry;
+  geometry?: Geometry;
   bounds?: [number, number, number, number];
   attributes?: Record<string, any>;
   page?: number;
@@ -30,7 +32,7 @@ export interface FeatureQuery {
 }
 
 export interface BufferAnalysis {
-  geometry: GeoJSON.Geometry;
+  geometry: Geometry;
   distance: number;
   unit: 'm' | 'km';
   targetLayers: string[];

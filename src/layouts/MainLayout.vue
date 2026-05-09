@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { MapContainer } from '@/components/map/MapContainer.vue';
-import { LayerPanel } from '@/components/map/LayerPanel.vue';
+import MapContainer from '@/components/map/MapContainer.vue';
+import LayerPanel from '@/components/map/LayerPanel.vue';
 import {
   MapPin, Layers, Menu, X, Settings, User, LogOut, ChevronLeft, ChevronRight
 } from 'lucide-vue-next';
@@ -138,7 +138,7 @@ defineExpose({ mapRef });
 
       <footer class="h-8 bg-slate-900/95 border-t border-slate-800 flex items-center justify-between px-4 text-xs text-slate-500">
         <span>EPSG:4326 | 比例尺 1:50000</span>
-        <span>© 2026 GIS地理信息系统</span>
+        <span>2026 GIS地理信息系统</span>
       </footer>
     </main>
   </div>

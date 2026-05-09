@@ -12,14 +12,18 @@
     "lint:fix": "eslint . --ext .ts,.vue --fix"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
     "@turf/turf": "^6.5.0",
+    "@types/geojson": "^7946.0.16",
     "axios": "^1.6.5",
+    "clsx": "^2.1.1",
     "echarts": "^5.5.0",
     "element-plus": "^2.5.6",
     "lucide-vue-next": "^0.511.0",
     "ol": "^9.0.0",
-    "pinia": "^2.1.7",
+    "pinia": "^2.3.1",
     "proj4": "^2.9.2",
+    "tailwind-merge": "^2.6.1",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },

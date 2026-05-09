@@ -200,7 +200,7 @@ defineExpose({ layers });
               </div>
               <ElSlider
                 :model-value="layer.opacity * 100"
-                @update:model-value="updateOpacity(layer, $event)"
+                @update:model-value="(val: number) => updateOpacity(layer, val)"
                 :show-tooltip="false"
                 size="small"
               />

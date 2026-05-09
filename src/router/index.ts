@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 import LoginPage from '@/pages/LoginPage.vue';
 import MapPage from '@/pages/MapPage.vue';
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: '/map'

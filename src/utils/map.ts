@@ -11,6 +11,7 @@ import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 import Feature from 'ol/Feature';
 import { Geometry, Point, LineString, Polygon } from 'ol/geom';
 import * as turf from '@turf/turf';
+import type { Feature as GeoJSONFeature, FeatureCollection } from 'geojson';
 
 export interface MapOptions {
   target: string;
@@ -22,14 +23,14 @@ export interface MapOptions {
 export class GisMap {
   private map: Map;
   private vectorSource: VectorSource;
-  private vectorLayer: VectorLayer;
+  private vectorLayer: VectorLayer<Feature>;
   private drawInteraction: Draw | null = null;
   private modifyInteraction: Modify | null = null;
   private selectInteraction: Select | null = null;
 
   constructor(options: MapOptions) {
     this.vectorSource = new VectorSource();
-    this.vectorLayer = new VectorLayer({
+    this.vectorLayer = new VectorLayer<Feature>({
       source: this.vectorSource,
       style: new Style({
         fill: new Fill({ color: 'rgba(26, 86, 219, 0.2)' }),
@@ -165,7 +166,7 @@ export class GisMap {
   createBuffer(center: [number, number], radius: number, unit: 'meters' | 'kilometers' = 'meters'): Feature {
     const point = turf.point(center);
     const buffered = turf.buffer(point, radius, { units: unit });
-    const geometry = new Polygon(buffered.geometry.coordinates);
+    const geometry = new Polygon(buffered!.geometry.coordinates as [number, number][][]);
     return new Feature({ geometry });
   }
 
@@ -183,7 +184,7 @@ export class GisMap {
     );
   }
 
-  exportToGeoJSON(): GeoJSON.FeatureCollection {
+  exportToGeoJSON(): FeatureCollection {
     const features = this.vectorSource.getFeatures();
     return {
       type: 'FeatureCollection',
@@ -191,19 +192,19 @@ export class GisMap {
         return {
           type: 'Feature',
           id: f.getId(),
-          geometry: f.getGeometry()!.transform('EPSG:4326', 'EPSG:4326'),
+          geometry: f.getGeometry()!.transform('EPSG:4326', 'EPSG:4326') as any,
           properties: f.getProperties()
         };
       })
-    } as GeoJSON.FeatureCollection;
+    };
   }
 
-  importGeoJSON(geojson: GeoJSON.FeatureCollection) {
+  importGeoJSON(geojson: FeatureCollection) {
     this.vectorSource.clear();
     geojson.features.forEach((feature) => {
-      const geom = Geometry.fromFeature(new Feature(feature as any));
+      const geom = new Geometry();
       const props = { ...feature.properties, id: feature.id };
-      this.addFeature(geom, props);
+      this.addFeature(geom as any, props);
     });
   }
 
