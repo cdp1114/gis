@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { GisMap } from '@/utils/map';
-import { Trash2, Download, Plus, ZoomOut, RotateCcw, MapPin, MousePointer, PenTool, Ruler, Layers, Grid3X3 } from 'lucide-vue-next';
+import { Trash2, Download, ZoomIn, ZoomOut, RotateCcw, MapPin, MousePointer, PenTool, Ruler, Layers, Grid3X3 } from 'lucide-vue-next';
 
 const mapContainer = ref<HTMLElement | null>(null);
 let gisMap: GisMap | null = null;
@@ -96,8 +96,10 @@ const zoomOut = () => {
 };
 
 const resetView = () => {
-  gisMap?.setCenter([116.3974, 39.9088]);
-  gisMap?.setZoom(10);
+  if (gisMap) {
+    gisMap.setCenter([116.3974, 39.9088]);
+    gisMap.setZoom(10);
+  }
 };
 
 const exportMap = () => {
@@ -169,16 +171,16 @@ defineExpose({
       <Transition name="slide-down">
         <div
           v-if="activeTool === 'draw'"
-          class="bg-slate-900/95 backdrop-blur-md rounded-xl shadow-2xl border border-emerald-500/30 p-2 min-w-[100px]"
+          class="bg-slate-800/98 backdrop-blur-lg rounded-xl shadow-2xl border-2 border-emerald-500/50 p-2 min-w-[110px] mt-2"
         >
           <div class="flex flex-col gap-1">
             <button
               @click="setDrawType('point')"
               :class="[
-                'flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm',
+                'flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-sm font-medium',
                 drawType === 'point'
-                  ? 'bg-emerald-600 text-white'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg'
+                  : 'text-slate-300 hover:bg-slate-700'
               ]"
             >
               <MapPin :size="16" />
@@ -187,10 +189,10 @@ defineExpose({
             <button
               @click="setDrawType('line')"
               :class="[
-                'flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm',
+                'flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-sm font-medium',
                 drawType === 'line'
-                  ? 'bg-emerald-600 text-white'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg'
+                  : 'text-slate-300 hover:bg-slate-700'
               ]"
             >
               <Layers :size="16" />
@@ -199,10 +201,10 @@ defineExpose({
             <button
               @click="setDrawType('polygon')"
               :class="[
-                'flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm',
+                'flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-sm font-medium',
                 drawType === 'polygon'
-                  ? 'bg-emerald-600 text-white'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-lg'
+                  : 'text-slate-300 hover:bg-slate-700'
               ]"
             >
               <Grid3X3 :size="16" />
@@ -221,7 +223,7 @@ defineExpose({
             class="flex items-center justify-center w-10 h-10 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
             title="放大"
           >
-            <Plus :size="18" />
+            <ZoomIn :size="18" />
           </button>
           <button
             @click="zoomOut"

@@ -334,6 +334,10 @@ defineExpose({ layers });
 .layer-dialog :deep(.el-dialog) {
   background: #1e293b;
   border: 1px solid #334155;
+  z-index: 9999 !important;
+}
+.layer-dialog :deep(.el-dialog__wrapper) {
+  z-index: 9998 !important;
 }
 .layer-dialog :deep(.el-dialog__header) {
   border-bottom: 1px solid #334155;
