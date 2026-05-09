@@ -205,11 +205,7 @@ defineExpose({ mapRef });
 
       <div class="flex-1 flex overflow-hidden">
         <div class="flex-1 relative overflow-hidden">
-          <router-view v-slot="{ Component }">
-            <transition name="fade" mode="out-in">
-              <component :is="Component" />
-            </transition>
-          </router-view>
+          <slot />
         </div>
 
         <Transition name="slide">
@@ -243,15 +239,5 @@ defineExpose({ mapRef });
 .slide-leave-to {
   opacity: 0;
   transform: translateX(20px);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>
