@@ -124,10 +124,10 @@ div[class*="ol-zoom"] {
 }
 
 :deep(.el-table) {
-  background-color: transparent !important;
+  background-color: #1e293b !important;
   color: #e2e8f0 !important;
-  --el-table-bg-color: transparent;
-  --el-table-tr-bg-color: transparent;
+  --el-table-bg-color: #1e293b;
+  --el-table-tr-bg-color: #1e293b;
   --el-table-header-bg-color: rgba(51, 65, 85, 0.8);
   --el-table-header-text-color: #e2e8f0;
   --el-table-text-color: #cbd5e1;
@@ -143,11 +143,11 @@ div[class*="ol-zoom"] {
 }
 
 :deep(.el-table__body-wrapper) {
-  background-color: transparent !important;
+  background-color: #1e293b !important;
 }
 
 :deep(.el-table__body-wrapper tr) {
-  background-color: transparent !important;
+  background-color: #1e293b !important;
 }
 
 :deep(.el-table__body-wrapper tr:hover > td) {
@@ -155,6 +155,7 @@ div[class*="ol-zoom"] {
 }
 
 :deep(.el-table__body-wrapper td) {
+  background-color: #1e293b !important;
   border-bottom: 1px solid #334155 !important;
   color: #cbd5e1 !important;
 }
