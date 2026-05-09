@@ -151,7 +151,7 @@ defineExpose({ layers });
 </script>
 
 <template>
-  <div class="h-full flex flex-col bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700">
+  <div class="h-full flex flex-col bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700 relative z-10">
     <div class="flex items-center justify-between p-4 border-b border-slate-700">
       <div class="flex items-center gap-2">
         <Layers :size="18" class="text-blue-400" />
@@ -334,10 +334,14 @@ defineExpose({ layers });
 .layer-dialog :deep(.el-dialog) {
   background: #1e293b;
   border: 1px solid #334155;
-  z-index: 9999 !important;
 }
 .layer-dialog :deep(.el-dialog__wrapper) {
-  z-index: 9998 !important;
+  z-index: 9999 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
 }
 .layer-dialog :deep(.el-dialog__header) {
   border-bottom: 1px solid #334155;
