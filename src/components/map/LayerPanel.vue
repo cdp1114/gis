@@ -151,7 +151,7 @@ defineExpose({ layers });
 </script>
 
 <template>
-  <div class="h-full flex flex-col bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700 relative z-10">
+  <div class="h-full flex flex-col bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700" style="overflow: hidden;">
     <div class="flex items-center justify-between p-4 border-b border-slate-700">
       <div class="flex items-center gap-2">
         <Layers :size="18" class="text-blue-400" />
