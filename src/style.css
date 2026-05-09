@@ -49,14 +49,24 @@ body {
 .ol-attribution,
 .ol-full-screen {
   display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  width: 0 !important;
-  height: 0 !important;
-  padding: 0 !important;
+}
+
+:deep(.el-dialog__wrapper) {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+:deep(.el-dialog) {
+  position: relative !important;
   margin: 0 !important;
-  border: none !important;
+  width: auto !important;
 }
 
 div[class*="ol-zoom"] {
