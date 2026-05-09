@@ -112,14 +112,16 @@ const handleSave = () => {
           </template>
         </ElTableColumn>
         <ElTableColumn prop="createTime" label="创建时间" width="120" />
-        <ElTableColumn label="操作" width="150" fixed="right">
+        <ElTableColumn label="操作" width="160" fixed="right">
           <template #default="{ row }">
             <div class="flex gap-2">
-              <button @click="handleEdit(row)" class="p-1 hover:bg-slate-600 text-slate-400 hover:text-white rounded transition-colors">
+              <button @click="handleEdit(row)" class="flex items-center gap-1 px-2 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 rounded transition-colors">
                 <Edit2 :size="14" />
+                <span class="text-xs">编辑</span>
               </button>
-              <button @click="handleDelete(row)" class="p-1 hover:bg-red-600 text-slate-400 hover:text-white rounded transition-colors">
+              <button @click="handleDelete(row)" class="flex items-center gap-1 px-2 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded transition-colors">
                 <Trash2 :size="14" />
+                <span class="text-xs">删除</span>
               </button>
             </div>
           </template>

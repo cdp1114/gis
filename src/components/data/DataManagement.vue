@@ -137,14 +137,15 @@ const formatFileSize = (bytes: number) => {
             <span class="text-slate-400 text-sm">{{ row.importedAt }}</span>
           </template>
         </ElTableColumn>
-        <ElTableColumn label="操作" width="120">
+        <ElTableColumn label="操作" width="160">
           <template #default="{ row }">
             <button
               v-if="row.status === 'error'"
               @click="handleFileUpload"
-              class="text-blue-400 hover:text-blue-300 text-sm"
+              class="flex items-center gap-1 px-2 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 rounded transition-colors"
             >
-              重新导入
+              <RefreshCw :size="14" />
+              <span class="text-xs">重新导入</span>
             </button>
             <span v-else class="text-slate-500 text-sm">-</span>
           </template>

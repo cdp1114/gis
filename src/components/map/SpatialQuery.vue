@@ -162,7 +162,7 @@ const getStatusText = (status: string) => {
             </span>
           </template>
         </ElTableColumn>
-        <ElTableColumn label="操作" width="100" fixed="right">
+        <ElTableColumn label="操作" width="160" fixed="right">
           <template #default="{ row }">
             <button
               @click="handleLocate(row)"

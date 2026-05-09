@@ -11,12 +11,15 @@ import router from './router';
 const app = createApp(App);
 const pinia = createPinia();
 
+app.use(pinia);
+app.use(ElementPlus, { size: 'default' });
+
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
 
-app.use(pinia);
-app.use(ElementPlus);
 app.use(router);
+
+document.documentElement.classList.add('dark');
 
 app.mount('#app');

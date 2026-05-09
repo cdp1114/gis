@@ -99,7 +99,7 @@ const handleDelete = (row: any) => {
               </div>
             </template>
           </ElTableColumn>
-          <ElTableColumn label="操作" width="100">
+          <ElTableColumn label="操作" width="160">
             <template #default="{ row }">
               <button
                 @click="handleDelete(row)"
