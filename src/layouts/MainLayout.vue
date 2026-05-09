@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import MapContainer from '@/components/map/MapContainer.vue';
 import LayerPanel from '@/components/map/LayerPanel.vue';
 import {
-  MapPin, Layers, Menu, X, Settings, User, LogOut, ChevronLeft, ChevronRight
+  MapPin, Layers, Settings, User, ChevronLeft, ChevronRight, Bell, Maximize2
 } from 'lucide-vue-next';
 
 const showLayerPanel = ref(true);
@@ -98,26 +98,63 @@ defineExpose({ mapRef });
     </aside>
 
     <main class="flex-1 flex flex-col h-full overflow-hidden">
-      <header class="h-14 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800 flex items-center justify-between px-4">
-        <div class="flex items-center gap-4">
+      <header class="h-14 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-4 shrink-0">
+        <div class="flex items-center gap-3">
           <button
             @click="toggleLayerPanel"
             :class="[
-              'flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors',
+              'flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all',
               showLayerPanel
-                ? 'bg-blue-600 text-white'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
             ]"
           >
             <Layers :size="16" />
-            <span class="text-sm">图层</span>
+            <span class="text-sm font-medium">图层</span>
           </button>
+
+          <div class="h-6 w-px bg-slate-700"></div>
+
+          <div class="flex items-center gap-2 text-slate-400">
+            <MapPin :size="14" />
+            <span class="text-sm">北京</span>
+          </div>
         </div>
 
-        <div class="flex items-center gap-3">
-          <span class="text-sm text-slate-400">北京</span>
-          <div class="w-px h-6 bg-slate-700"></div>
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-800 rounded-lg">
+            <span class="text-xs text-slate-500">EPSG:</span>
+            <span class="text-sm font-mono text-slate-300">4326</span>
+          </div>
+
+          <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-800 rounded-lg">
+            <span class="text-xs text-slate-500">比例尺:</span>
+            <span class="text-sm font-mono text-slate-300">1:50000</span>
+          </div>
+
+          <div class="h-6 w-px bg-slate-700"></div>
+
           <span class="text-sm text-slate-400">2026-05-09</span>
+
+          <button
+            class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors relative"
+          >
+            <Bell :size="18" />
+            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+
+          <button
+            class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+          >
+            <Maximize2 :size="18" />
+          </button>
+
+          <div class="flex items-center gap-2 pl-2 border-l border-slate-700">
+            <div class="w-7 h-7 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+              <User :size="14" class="text-white" />
+            </div>
+            <span class="text-sm text-slate-300 hidden sm:inline">admin</span>
+          </div>
         </div>
       </header>
 
@@ -129,16 +166,16 @@ defineExpose({ mapRef });
         <Transition name="slide">
           <div
             v-if="showLayerPanel"
-            class="w-80 h-full p-4 overflow-hidden"
+            class="w-80 h-full bg-slate-900/95 border-l border-slate-800 p-4 overflow-hidden"
           >
             <LayerPanel />
           </div>
         </Transition>
       </div>
 
-      <footer class="h-8 bg-slate-900/95 border-t border-slate-800 flex items-center justify-between px-4 text-xs text-slate-500">
-        <span>EPSG:4326 | 比例尺 1:50000</span>
-        <span>2026 GIS地理信息系统</span>
+      <footer class="h-8 bg-slate-900 border-t border-slate-800 flex items-center justify-between px-4 text-xs text-slate-500 shrink-0">
+        <span>© 2026 GIS地理信息系统</span>
+        <span>数据来源: OpenStreetMap</span>
       </footer>
     </main>
   </div>
