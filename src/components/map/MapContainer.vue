@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { GisMap } from '@/utils/map';
-import { MousePointer, Edit, Ruler, MapPin, Layers, Grid3X3, Trash2, Download, Plus } from 'lucide-vue-next';
+import { MousePointer, Edit, Ruler, MapPin, Layers, Grid3X3, Trash2, Download, Plus, ZoomIn, ZoomOut, RotateCcw } from 'lucide-vue-next';
 
 const mapContainer = ref<HTMLElement | null>(null);
 let gisMap: GisMap | null = null;
 
 const activeTool = ref<'select' | 'draw' | 'measure'>('select');
-const drawType = ref<'point' | 'line' | 'polygon' | 'circle' | 'rectangle'>('point');
+const drawType = ref<'point' | 'line' | 'polygon'>('point');
 const showMeasureResult = ref(false);
 const measureResult = ref({ value: 0, unit: '' });
 
@@ -112,136 +112,146 @@ defineExpose({ gisMap });
   <div class="relative h-full w-full">
     <div id="map-container" ref="mapContainer" class="h-full w-full bg-slate-900"></div>
 
-    <div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
-      <div class="bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700 p-1.5">
-        <button
-          @click="setActiveTool('select')"
-          :class="[
-            'flex items-center gap-2.5 px-3.5 py-2.5 rounded-md transition-all w-full text-sm font-medium',
-            activeTool === 'select'
-              ? 'bg-blue-600 text-white'
-              : 'text-slate-300 hover:bg-slate-700'
-          ]"
-        >
-          <MousePointer :size="16" />
-          <span>选择</span>
-        </button>
-        <button
-          @click="setActiveTool('draw')"
-          :class="[
-            'flex items-center gap-2.5 px-3.5 py-2.5 rounded-md transition-all w-full text-sm font-medium',
-            activeTool === 'draw'
-              ? 'bg-blue-600 text-white'
-              : 'text-slate-300 hover:bg-slate-700'
-          ]"
-        >
-          <Edit :size="16" />
-          <span>绘制</span>
-        </button>
-        <button
-          @click="setActiveTool('measure')"
-          :class="[
-            'flex items-center gap-2.5 px-3.5 py-2.5 rounded-md transition-all w-full text-sm font-medium',
-            activeTool === 'measure'
-              ? 'bg-blue-600 text-white'
-              : 'text-slate-300 hover:bg-slate-700'
-          ]"
-        >
-          <Ruler :size="16" />
-          <span>测量</span>
-        </button>
+    <div class="absolute top-4 left-4 z-20 flex flex-col gap-3">
+      <div class="bg-slate-900/95 backdrop-blur-md rounded-xl shadow-2xl border border-slate-700 p-2">
+        <div class="flex flex-col gap-1">
+          <button
+            @click="setActiveTool('select')"
+            :class="[
+              'flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all',
+              activeTool === 'select'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            ]"
+          >
+            <MousePointer :size="18" />
+            <span class="text-sm font-medium">选择</span>
+          </button>
+          <button
+            @click="setActiveTool('draw')"
+            :class="[
+              'flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all',
+              activeTool === 'draw'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            ]"
+          >
+            <Edit :size="18" />
+            <span class="text-sm font-medium">绘制</span>
+          </button>
+          <button
+            @click="setActiveTool('measure')"
+            :class="[
+              'flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all',
+              activeTool === 'measure'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            ]"
+          >
+            <Ruler :size="18" />
+            <span class="text-sm font-medium">测量</span>
+          </button>
+        </div>
       </div>
 
-      <div
-        v-if="activeTool === 'draw'"
-        class="bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700 p-1.5"
-      >
-        <button
-          @click="setDrawType('point')"
-          :class="[
-            'flex items-center gap-2 px-3 py-2 rounded-md transition-all w-full text-xs font-medium',
-            drawType === 'point'
-              ? 'bg-emerald-600 text-white'
-              : 'text-slate-400 hover:bg-slate-700'
-          ]"
+      <Transition name="slide-down">
+        <div
+          v-if="activeTool === 'draw'"
+          class="bg-slate-900/95 backdrop-blur-md rounded-xl shadow-2xl border border-emerald-500/30 p-2"
         >
-          <MapPin :size="14" />
-          <span>点</span>
-        </button>
-        <button
-          @click="setDrawType('line')"
-          :class="[
-            'flex items-center gap-2 px-3 py-2 rounded-md transition-all w-full text-xs font-medium',
-            drawType === 'line'
-              ? 'bg-emerald-600 text-white'
-              : 'text-slate-400 hover:bg-slate-700'
-          ]"
-        >
-          <Layers :size="14" />
-          <span>线</span>
-        </button>
-        <button
-          @click="setDrawType('polygon')"
-          :class="[
-            'flex items-center gap-2 px-3 py-2 rounded-md transition-all w-full text-xs font-medium',
-            drawType === 'polygon'
-              ? 'bg-emerald-600 text-white'
-              : 'text-slate-400 hover:bg-slate-700'
-          ]"
-        >
-          <Grid3X3 :size="14" />
-          <span>面</span>
-        </button>
-      </div>
+          <div class="flex flex-col gap-1">
+            <button
+              @click="setDrawType('point')"
+              :class="[
+                'flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm',
+                drawType === 'point'
+                  ? 'bg-emerald-600 text-white'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              ]"
+            >
+              <MapPin :size="16" />
+              <span>点</span>
+            </button>
+            <button
+              @click="setDrawType('line')"
+              :class="[
+                'flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm',
+                drawType === 'line'
+                  ? 'bg-emerald-600 text-white'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              ]"
+            >
+              <Layers :size="16" />
+              <span>线</span>
+            </button>
+            <button
+              @click="setDrawType('polygon')"
+              :class="[
+                'flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm',
+                drawType === 'polygon'
+                  ? 'bg-emerald-600 text-white'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              ]"
+            >
+              <Grid3X3 :size="16" />
+              <span>面</span>
+            </button>
+          </div>
+        </div>
+      </Transition>
     </div>
 
-    <div class="absolute top-4 right-4 z-10 flex flex-col gap-2">
-      <div class="bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700 p-1.5">
-        <button
-          @click="zoomIn"
-          class="flex items-center justify-center w-10 h-10 text-slate-300 hover:bg-slate-700 hover:text-white rounded-md transition-all"
-          title="放大"
-        >
-          <Plus :size="18" />
-        </button>
-        <button
-          @click="zoomOut"
-          class="flex items-center justify-center w-10 h-10 text-slate-300 hover:bg-slate-700 hover:text-white rounded-md transition-all text-base font-light"
-          title="缩小"
-        >
-          -
-        </button>
-        <button
-          @click="resetView"
-          class="flex items-center justify-center w-10 h-10 text-slate-300 hover:bg-slate-700 hover:text-white rounded-md transition-all"
-          title="复位"
-        >
-          <MapPin :size="18" />
-        </button>
+    <div class="absolute top-4 right-4 z-20 flex flex-col gap-3">
+      <div class="bg-slate-900/95 backdrop-blur-md rounded-xl shadow-2xl border border-slate-700 p-2">
+        <div class="flex flex-col gap-1">
+          <button
+            @click="zoomIn"
+            class="flex items-center justify-center w-10 h-10 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
+            title="放大"
+          >
+            <Plus :size="18" />
+          </button>
+          <button
+            @click="zoomOut"
+            class="flex items-center justify-center w-10 h-10 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
+            title="缩小"
+          >
+            <ZoomOut :size="18" />
+          </button>
+          <button
+            @click="resetView"
+            class="flex items-center justify-center w-10 h-10 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
+            title="复位"
+          >
+            <RotateCcw :size="18" />
+          </button>
+        </div>
       </div>
 
-      <div class="bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700 p-1.5">
-        <button
-          @click="clearMap"
-          class="flex items-center justify-center w-10 h-10 text-slate-300 hover:bg-red-600/20 hover:text-red-400 rounded-md transition-all"
-          title="清空"
-        >
-          <Trash2 :size="18" />
-        </button>
-        <button
-          @click="exportMap"
-          class="flex items-center justify-center w-10 h-10 text-slate-300 hover:bg-emerald-600/20 hover:text-emerald-400 rounded-md transition-all"
-          title="导出"
-        >
-          <Download :size="18" />
-        </button>
+      <div class="bg-slate-900/95 backdrop-blur-md rounded-xl shadow-2xl border border-slate-700 p-2">
+        <div class="flex flex-col gap-1">
+          <button
+            @click="clearMap"
+            class="flex items-center justify-center w-10 h-10 text-slate-300 hover:text-red-400 hover:bg-red-600/20 rounded-lg transition-all"
+            title="清空"
+          >
+            <Trash2 :size="18" />
+          </button>
+          <button
+            @click="exportMap"
+            class="flex items-center justify-center w-10 h-10 text-slate-300 hover:text-emerald-400 hover:bg-emerald-600/20 rounded-lg transition-all"
+            title="导出"
+          >
+            <Download :size="18" />
+          </button>
+        </div>
       </div>
     </div>
 
     <Transition name="fade">
       <div
         v-if="showMeasureResult"
-        class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700 px-4 py-3"
+        class="absolute bottom-16 left-1/2 -translate-x-1/2 bg-slate-900/95 backdrop-blur-md rounded-xl shadow-2xl border border-slate-700 px-5 py-3 z-20"
       >
         <div class="text-slate-400 text-sm mb-1">测量结果</div>
         <div class="text-white text-xl font-semibold">
@@ -249,10 +259,28 @@ defineExpose({ gisMap });
         </div>
       </div>
     </Transition>
+
+    <div class="absolute bottom-4 left-4 z-10 bg-slate-900/95 backdrop-blur-md rounded-lg border border-slate-700 px-3 py-2">
+      <div class="flex items-center gap-2 text-xs text-slate-400">
+        <MapPin :size="12" />
+        <span>EPSG:4326</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
