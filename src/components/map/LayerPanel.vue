@@ -279,7 +279,7 @@ defineExpose({ layers });
       </div>
     </div>
 
-    <ElDialog v-model="showAddDialog" title="添加图层" width="400px" class="layer-dialog">
+    <ElDialog v-model="showAddDialog" title="添加图层" width="360px" class="layer-dialog">
       <ElForm :model="newLayer" label-position="top">
         <ElFormItem label="图层名称">
           <ElInput v-model="newLayer.layerName" placeholder="请输入图层名称" />
@@ -297,8 +297,8 @@ defineExpose({ layers });
             <ElOption label="WFS服务" value="wfs" />
           </ElSelect>
         </ElFormItem>
-        <ElFormItem v-if="['wms', 'wfs'].includes(newLayer.layerType || '')" label="数据源URL">
-          <ElInput v-model="newLayer.dataSource" placeholder="请输入服务地址" />
+        <ElFormItem label="数据源">
+          <ElInput v-model="newLayer.dataSource" placeholder="请输入数据源路径" />
         </ElFormItem>
         <ElFormItem label="透明度">
           <ElSlider v-model="newLayer.opacity" :min="0" :max="1" :step="0.1" show-stops />
@@ -306,11 +306,11 @@ defineExpose({ layers });
       </ElForm>
       <template #footer>
         <ElButton @click="showAddDialog = false">取消</ElButton>
-        <ElButton type="primary" @click="handleAddLayer">确定</ElButton>
+        <ElButton type="primary" @click="handleAddLayer">添加</ElButton>
       </template>
     </ElDialog>
 
-    <ElDialog v-model="showEditDialog" title="编辑图层" width="400px" class="layer-dialog">
+    <ElDialog v-model="showEditDialog" title="编辑图层" width="360px" class="layer-dialog">
       <ElForm v-if="editingLayer" :model="editingLayer" label-position="top">
         <ElFormItem label="图层名称">
           <ElInput v-model="editingLayer.layerName" />
