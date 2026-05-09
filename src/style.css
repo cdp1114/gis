@@ -44,6 +44,11 @@ body {
   background-color: rgba(51, 65, 85, 0.8) !important;
 }
 
+.ol-zoom,
+.ol-rotate {
+  display: none !important;
+}
+
 .ol-scale-line {
   background-color: rgba(30, 41, 59, 0.9) !important;
   border-radius: 4px !important;
