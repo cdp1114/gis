@@ -1,10 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import MapContainer from '@/components/map/MapContainer.vue';
 import LayerPanel from '@/components/map/LayerPanel.vue';
 import {
-  MapPin, Layers, Settings, User, ChevronLeft, ChevronRight, Bell, Maximize2
+  MapPin, Layers, Settings, User, ChevronLeft, ChevronRight, Bell, Maximize2,
+  Search, Activity, Database, BarChart3, Shield
 } from 'lucide-vue-next';
+
+const router = useRouter();
+const route = useRoute();
+
+const navigateTo = (path: string) => {
+  router.push(path);
+};
+
+const isActive = (path: string) => {
+  return route.path === path;
+};
 
 const showLayerPanel = ref(true);
 const collapsed = ref(false);
@@ -45,51 +58,79 @@ defineExpose({ mapRef });
       </div>
 
       <nav class="flex-1 py-4 px-2 space-y-1">
-        <a
-          href="#"
-          class="flex items-center gap-3 px-3 py-2.5 bg-blue-600/20 text-blue-400 rounded-lg border border-blue-500/30"
+        <button
+          @click="navigateTo('/map')"
+          :class="[
+            'flex items-center gap-3 px-3 py-2.5 w-full rounded-lg transition-colors',
+            isActive('/map') ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          ]"
         >
           <MapPin :size="18" />
           <span v-if="!collapsed" class="text-sm font-medium">地图浏览</span>
-        </a>
-        <a
-          href="#"
-          class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+        </button>
+        <button
+          @click="navigateTo('/map/query')"
+          :class="[
+            'flex items-center gap-3 px-3 py-2.5 w-full rounded-lg transition-colors',
+            isActive('/map/query') ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          ]"
         >
-          <Layers :size="18" />
+          <Search :size="18" />
           <span v-if="!collapsed" class="text-sm">空间查询</span>
-        </a>
-        <a
-          href="#"
-          class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+        </button>
+        <button
+          @click="navigateTo('/map/analysis')"
+          :class="[
+            'flex items-center gap-3 px-3 py-2.5 w-full rounded-lg transition-colors',
+            isActive('/map/analysis') ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          ]"
         >
-          <MapPin :size="18" />
+          <Activity :size="18" />
           <span v-if="!collapsed" class="text-sm">空间分析</span>
-        </a>
-        <a
-          href="#"
-          class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+        </button>
+        <button
+          @click="navigateTo('/data/manage')"
+          :class="[
+            'flex items-center gap-3 px-3 py-2.5 w-full rounded-lg transition-colors',
+            isActive('/data/manage') ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          ]"
         >
-          <Layers :size="18" />
+          <Database :size="18" />
           <span v-if="!collapsed" class="text-sm">数据管理</span>
-        </a>
-        <a
-          href="#"
-          class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+        </button>
+        <button
+          @click="navigateTo('/stats')"
+          :class="[
+            'flex items-center gap-3 px-3 py-2.5 w-full rounded-lg transition-colors',
+            isActive('/stats') ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          ]"
         >
-          <MapPin :size="18" />
+          <BarChart3 :size="18" />
           <span v-if="!collapsed" class="text-sm">统计分析</span>
-        </a>
+        </button>
       </nav>
 
       <div class="border-t border-slate-800 p-2">
-        <a
-          href="#"
-          class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+        <button
+          @click="navigateTo('/system/user')"
+          :class="[
+            'flex items-center gap-3 px-3 py-2.5 w-full rounded-lg transition-colors',
+            isActive('/system/user') ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          ]"
         >
-          <Settings :size="18" />
-          <span v-if="!collapsed" class="text-sm">系统设置</span>
-        </a>
+          <User :size="18" />
+          <span v-if="!collapsed" class="text-sm">用户管理</span>
+        </button>
+        <button
+          @click="navigateTo('/system/role')"
+          :class="[
+            'flex items-center gap-3 px-3 py-2.5 w-full rounded-lg transition-colors',
+            isActive('/system/role') ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          ]"
+        >
+          <Shield :size="18" />
+          <span v-if="!collapsed" class="text-sm">角色管理</span>
+        </button>
         <div class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
           <User :size="18" />
           <span v-if="!collapsed" class="text-sm">admin</span>
